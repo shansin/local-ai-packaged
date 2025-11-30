@@ -223,7 +223,15 @@ def main():
                       help='Profile to use for Docker Compose (default: cpu)')
     parser.add_argument('--environment', choices=['private', 'public'], default='private',
                       help='Environment to use for Docker Compose (default: private)')
+    parser.add_argument('--stop', action='store_true',
+                      help='Stop and remove existing containers without starting new ones')
     args = parser.parse_args()
+
+    # If --stop flag is set, only stop containers and exit
+    if args.stop:
+        stop_existing_containers(args.profile)
+        print("Containers stopped successfully.")
+        return
 
     clone_supabase_repo()
     prepare_supabase_env()
